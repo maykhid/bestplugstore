@@ -1,25 +1,26 @@
 import 'package:best_plug_gadgets/auth/auth.dart';
 import 'package:best_plug_gadgets/extras/app_colors.dart';
-import 'package:best_plug_gadgets/screens/signup_screen.dart';
+import 'package:best_plug_gadgets/screens/login_screen.dart';
 import 'package:best_plug_gadgets/services/screen_data.dart';
 import 'package:best_plug_gadgets/services/validators.dart';
 import 'package:best_plug_gadgets/widgets/buttons.dart';
 import 'package:best_plug_gadgets/widgets/ui_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String _email;
   String _password;
-  FormType _formType = FormType.login;
+  FormType _formType = FormType.register;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +41,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: ScreenData.screenHeight / (ScreenData.half * 8),
                 ),
                 WelcomeUser(
-                  boldText: 'Welcome',
-                  boldSubText: 'Sign in to continue!',
+                  boldText: 'Create Account',
+                  boldSubText: 'Sign up to get started!',
                 ),
                 SizedBox(
                   height: ScreenData.screenHeight / (ScreenData.half * 4),
                 ),
-                _buildLoginForm(),
+                _buildSignUpForm(),
                 SizedBox(
                   height: ScreenData.screenHeight / 12,
                 ),
                 Button.plain(
                   context: context,
-                  label: "Login",
+                  label: "Sign Up",
                   gradientColors: [AppColors.pink, AppColors.lightOrange],
                   useIcon: false,
                   onPressed: () {
@@ -92,43 +93,32 @@ class _LoginScreenState extends State<LoginScreen> {
   _buildBottomText() {
     return Center(
       child: BottomText(
-        firstText: 'New User',
-        secondText: 'Sign up',
-        onPressed: _goto,
+        firstText: 'Already a member',
+        secondText: 'Log in',
+        onPressed: () {},
       ),
     );
   }
 
-  Form _buildLoginForm() {
+  _buildSignUpForm() {
     return Form(
       key: formKey,
       child: Container(
-        // padding: EdgeInsets.only(left: 25.0, right: 25.0),
         child: Column(
           children: [
+            TextInputField(
+              labelText: 'Full Name',
+            ),
             TextInputField(
               labelText: 'Email ID',
               validator: EmailFieldValidator.validate,
               onSaved: (String value) => _email = value,
             ),
-            // SizedBox(
-            //   height: 12.0,
-            // ),
             TextInputField(
               labelText: 'Password',
               shouldObscureText: true,
               validator: PasswordFieldValidator.validate,
               onSaved: (String value) => _password = value,
-            ),
-            // SizedBox(
-            //   height: 12.0,
-            // ),
-            Align(
-              child: Text(
-                'Forgot password?',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-              alignment: Alignment.centerRight,
             ),
           ],
         ),
@@ -138,6 +128,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _goto() {
     Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => SignUpScreen()));
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
   }
+
+  // _registerUser(BuildContext context) {
+  //
+  // }
 }

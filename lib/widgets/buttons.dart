@@ -2,6 +2,7 @@
 import 'package:best_plug_gadgets/extras/app_colors.dart';
 import 'package:best_plug_gadgets/services/screen_data.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Button {
   static Widget signInOption(
@@ -72,43 +73,97 @@ class Button {
       double borderRadius = 10,
       double horizontalPadding = 2,
       double verticalPadding = 8,
-      String label,
+      @required String label,
       double labelPadding = 10,
       double labelSize = 22,
-      Color labelColor,
+      Color labelColor = Colors.white,
       List<Color> gradientColors,
+      bool useGradient = true,
+      bool useIcon = true,
       Function onPressed}) {
+    // init ScreenData
+    ScreenData().init(context);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      child: _buttonContainer(
+          useGradient, gradientColors, buttonColor, useIcon, label, labelColor),
+      onTap: onPressed,
+    );
+  }
+
+  // this basically serves as the button's main structure
+  static Container _buttonContainer(
+      bool useGradient,
+      List<Color> gradientColors,
+      Color buttonColor,
+      bool useIcon,
+      String label,
+      Color labelColor) {
     return Container(
       height: 50.0,
-      padding: EdgeInsets.only(left: 25.0, right: 25.0),
-      // margin: EdgeInsets.all(10),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-          padding: EdgeInsets.all(0.0),
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [AppColors.pink, AppColors.lightOrange],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+      // padding: EdgeInsets.only(left: 25.0, right: 25.0),
+      child: Ink(
+        decoration: _buttonDecoration(useGradient, gradientColors, buttonColor),
+        child: Container(
+          constraints:
+              BoxConstraints(maxWidth: ScreenData.screenWidth, minHeight: 50.0),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _visibility(useIcon),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: labelColor,
+                  fontSize: 15,
+                ),
               ),
-              borderRadius: BorderRadius.circular(10.0)),
-          child: Container(
-            constraints: BoxConstraints(
-                maxWidth: ScreenData.screenWidth / 1.0, minHeight: 50.0),
-            alignment: Alignment.center,
-            child: Text(
-              "Gradient Button",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  // for visibility
+  static Visibility _visibility(bool useIcon) {
+    // decides if icon is to be shown or not, using the bool useIcon property
+    return Visibility(
+      child: Row(
+        children: [
+          Icon(
+            FontAwesomeIcons.google,
+            color: AppColors.pink,
+          ),
+          SizedBox(
+            width: ScreenData.screenWidth / (ScreenData.ten * 4),
+          ),
+        ],
+      ),
+      visible: useIcon,
+    );
+  }
+
+  // for button decoration
+  static BoxDecoration _buttonDecoration(
+      bool useGradient, List<Color> gradientColors, Color buttonColor) {
+    // logic to decide if gradient is used or not
+    if (useGradient)
+      return BoxDecoration(
+        gradient: LinearGradient(
+          colors: gradientColors,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(10.0),
+      );
+    else
+      return BoxDecoration(
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(10.0),
+      );
   }
 }
