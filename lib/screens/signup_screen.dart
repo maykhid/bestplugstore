@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: BottomText(
         firstText: 'Already a member',
         secondText: 'Log in',
-        onPressed: () {},
+        onPressed: _goto,
       ),
     );
   }
@@ -127,11 +127,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _goto() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+    // This updates Status to Unauthenticated so it can move to the LoginScreen
+    Provider.of<Auth>(context, listen: false)
+                .updateStatus(Status.Unauthenticated);
   }
-
-  // _registerUser(BuildContext context) {
-  //
-  // }
 }

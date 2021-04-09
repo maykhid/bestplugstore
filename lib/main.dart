@@ -1,6 +1,6 @@
 import 'package:best_plug_gadgets/auth/auth.dart';
+import 'package:best_plug_gadgets/screens/home_screen.dart';
 import 'package:best_plug_gadgets/screens/login_screen.dart';
-import 'package:best_plug_gadgets/screens/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // Provider<Auth>(
         //   create: (_) => Auth(FirebaseAuth.instance),
         // )
-        ChangeNotifierProvider.value(value: Auth(FirebaseAuth.instance)),
+        ChangeNotifierProvider.value(value: Auth.instance(FirebaseAuth.instance)),
       ],
       child: MaterialApp(
         // title: 'BestPlugGadgets',
@@ -31,7 +31,8 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'Poppins',
         ),
-        home: LoginScreen(),
+        debugShowCheckedModeBanner: false,
+        home: Home(),
       ),
     );
   }

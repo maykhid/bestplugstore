@@ -57,11 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   useIcon: false,
                   onPressed: () {
                     print("Test onPress");
+                    //TODO: Modularize the code below
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      Provider.of<Auth>(context, listen: false)
-                          .validateAndSubmit(
-                              formKey, _formType, _email, _password);
+                      context.read<Auth>().validateAndSubmit(
+                          formKey, _formType, _email, _password);
                     }
                   },
                 ),
@@ -69,13 +69,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: ScreenData.screenHeight / (ScreenData.five * 9),
                 ),
                 Button.plain(
-                  context: context,
-                  label: "Connect with Google",
-                  useGradient: false,
-                  buttonColor: AppColors.greyWhite,
-                  labelColor: AppColors.pink,
-                  useIcon: true,
-                ),
+                    context: context,
+                    label: "Connect with Google",
+                    useGradient: false,
+                    buttonColor: AppColors.greyWhite,
+                    labelColor: AppColors.pink,
+                    useIcon: true,
+                    onPressed: () {
+                      Provider.of<Auth>(context, listen: false)
+                          .signInWithGoogle();
+                    }),
                 SizedBox(
                   height: ScreenData.screenHeight / ScreenData.ten,
                 ),
@@ -92,14 +95,18 @@ class _LoginScreenState extends State<LoginScreen> {
   _buildBottomText() {
     return Center(
       child: BottomText(
-        firstText: 'New User',
-        secondText: 'Sign up',
-        onPressed: _goto,
-      ),
+          firstText: 'New User',
+          secondText: 'Sign up',
+          // onPressed: () {
+          //   Provider.of<Auth>(context, listen: false)
+          //       .updateStatus(Status.NewUser);
+          // }
+          onPressed: _goto,
+          ),
     );
   }
 
-  Form _buildLoginForm() {
+  _buildLoginForm() {
     return Form(
       key: formKey,
       child: Container(
@@ -137,7 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _goto() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => SignUpScreen()));
+    // This updates Status to NewUser so it can move to the SignUpScreen
+    Provider.of<Auth>(context, listen: false)
+                .updateStatus(Status.NewUser);
   }
 }
