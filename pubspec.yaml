@@ -33,8 +33,13 @@ dependencies:
   # Necessary Dependencies for firebase products
   firebase_core: ^1.0.2
   firebase_auth: ^1.0.1
-  google_sign_in: ^5.0.1
 
+  #google sign-in
+  google_sign_in: ^5.0.1
+  
+  #cloud_firestore
+  cloud_firestore: ^1.0.4
+  
   #provider
   provider: ^5.0.0
 
