@@ -6,9 +6,12 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- To allow insecure connections, usesCleartextTraffic == true-->
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="best_plug_gadgets"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

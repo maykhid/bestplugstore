@@ -1,4 +1,5 @@
 // main functions for email auth
+import 'package:best_plug_gadgets/services/store/firestore.dart';
 import 'package:best_plug_gadgets/services/validators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
   final FirebaseAuth _firebaseAuth;
   User _user;
   Status _status = Status.Unininitialized;
+  Firestrore store;
 
   Auth.instance(this._firebaseAuth) {
     _firebaseAuth.authStateChanges().listen(onAuthStateChanged);
@@ -56,6 +58,15 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
           'This is the status #on createUserWithEmailAndPassword -> ${_status.toString()}');
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      // assert(!currentUser() == null);
+
+      // await store.addUserToDb(
+      //     uid: currentUser(),
+      //     email: email,
+      //     time: DateTime.now(),
+      //     username: username);
+
       return currentUser();
     } on FirebaseAuthException catch (e) {
       updateStatus(Status.Unauthenticated);
@@ -73,7 +84,8 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
   @override
   currentUser() {
     _user = _firebaseAuth.currentUser;
-    return user?.uid;
+    notifyListeners();
+    return _user?.uid;
   }
 
   // signInWithEmailAndPassword
@@ -132,24 +144,37 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
 
   // runs validateAndSave() and submits depending on formType
   // e.g if formType == FormType.login perform signInWithEmailAndPassword
-  Future<void> validateAndSubmit(GlobalKey<FormState> formKey,
-      FormType formType, String email, String password) async {
-    if (validateAndSave(formKey)) {
-      try {
-        if (formType == FormType.login) {
-          final String userId =
-              await signInWithEmailAndPassword(email, password);
-          print('Logged In: $userId');
-        } else {
-          final String userId =
-              await createUserWithEmailAndPassword(email, password);
-          print('Signed Up: $userId');
-        }
-      } catch (e) {
-        print('Error: $e');
+  Future<void> validateAndSubmit(
+      GlobalKey<FormState> formKey, String email, String password) async {
+    try {
+      if (validateAndSave(formKey)) {
+        // if (formType == FormType.login) {
+        final String userId = await signInWithEmailAndPassword(email, password);
+        print('Logged In: $userId');
       }
     }
-    // notifyListeners();
+    // else {
+    //   final String userId = await createUserWithEmailAndPassword(
+    //       email, password, username, DateTime.now());
+    //   print('Signed Up: $userId');
+    // }
+    catch (e) {
+      print('Error: $e');
+    }
+  }
+  // notifyListeners();
+
+  Future<void> validateAndSignUp(GlobalKey<FormState> formKey, String email,
+      String password, String username) async {
+    try {
+      if (validateAndSave(formKey)) {
+        final String userId =
+            await createUserWithEmailAndPassword(email, password);
+        print('Signed Up: $userId');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   @override
