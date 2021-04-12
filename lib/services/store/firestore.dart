@@ -42,7 +42,10 @@ class Firestrore extends ChangeNotifier {
   // }
 
   Future<void> addUserToDb(
-      {@required String uid, @required String email, @required String username, @required DateTime time}) async {
+      {@required String uid,
+      @required String email,
+      @required String username,
+      @required DateTime time}) async {
     _userModel =
         UserModel(uid: uid, email: email, username: username, createdAt: time);
     await _firebaseFirestore
@@ -52,7 +55,9 @@ class Firestrore extends ChangeNotifier {
   }
 
   Future<void> getUserFromDb({String uid}) async {
-    final DocumentSnapshot doc = await _firebaseFirestore.collection('users').doc(uid).get();
+    final DocumentSnapshot doc =
+        await _firebaseFirestore.collection('users').doc(uid).get();
+    print(doc.data().toString());
     return UserModel.getUser(doc.data());
   }
 }
