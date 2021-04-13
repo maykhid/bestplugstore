@@ -24,9 +24,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-            value: Auth.instance(FirebaseAuth.instance)),
+          value: Auth.instance(FirebaseAuth.instance),
+        ),
         ChangeNotifierProvider.value(
-            value: Firestrore.instance(FirebaseFirestore.instance)),
+          value: Firestrore.instance(FirebaseFirestore.instance),
+        ),
       ],
       child: MaterialApp(
         // title: 'BestPlugGadgets',

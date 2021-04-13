@@ -54,10 +54,14 @@ class Firestrore extends ChangeNotifier {
         .set(_userModel.setUser(_userModel));
   }
 
-  Future<void> getUserFromDb({String uid}) async {
-    final DocumentSnapshot doc =
-        await _firebaseFirestore.collection('users').doc(uid).get();
-    print(doc.data().toString());
-    return UserModel.getUser(doc.data());
+  Stream<UserModel> getUserFromDb({String uid}) {
+    return _firebaseFirestore
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((snap) => UserModel.getUser(snap.data()));
+    // print(doc.data().toString());
+    // return UserModel.getUser(doc.data());
+    // return doc;
   }
 }

@@ -59,14 +59,6 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      // assert(!currentUser() == null);
-
-      // await store.addUserToDb(
-      //     uid: currentUser(),
-      //     email: email,
-      //     time: DateTime.now(),
-      //     username: username);
-
       return currentUser();
     } on FirebaseAuthException catch (e) {
       updateStatus(Status.Unauthenticated);
@@ -84,7 +76,7 @@ class Auth with ChangeNotifier implements EmailAuth, GoogleAuth {
   @override
   currentUser() {
     _user = _firebaseAuth.currentUser;
-    notifyListeners();
+    // notifyListeners();
     return _user?.uid;
   }
 

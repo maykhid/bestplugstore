@@ -24,85 +24,97 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     ScreenData().init(context);
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      resizeToAvoidBottomInset: true,
-      key: _scaffoldKey,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: ScreenData.screenHeight / (ScreenData.half * 8),
-                ),
-                WelcomeUser(
-                  boldText: 'Welcome',
-                  boldSubText: 'Sign in to continue!',
-                ),
-                SizedBox(
-                  height: ScreenData.screenHeight / (ScreenData.half * 4),
-                ),
-                _buildLoginForm(),
-                SizedBox(
-                  height: ScreenData.screenHeight / 12,
-                ),
-                Button.plain(
-                  context: context,
-                  label: "Login",
-                  gradientColors: [AppColors.pink, AppColors.lightOrange],
-                  useIcon: false,
-                  onPressed: () {
-                    print("Test onPress");
-                    //TODO: Modularize the code below
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      context.read<Auth>().validateAndSubmit(
-                          formKey, _email, _password);
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: ScreenData.screenHeight / (ScreenData.five * 9),
-                ),
-                Button.plain(
+
+    return Consumer<Auth>(builder: (context, auth, _) {
+      return Scaffold(
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: true,
+        key: _scaffoldKey,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    height: ScreenData.screenHeight / (ScreenData.half * 8),
+                  ),
+
+                  WelcomeUser(
+                    boldText: 'Welcome',
+                    boldSubText: 'Sign in to continue!',
+                  ),
+
+                  SizedBox(
+                    height: ScreenData.screenHeight / (ScreenData.half * 4),
+                  ),
+
+                  _buildLoginForm(),
+
+                  SizedBox(
+                    height: ScreenData.screenHeight / 12,
+                  ),
+
+                  Button.plain(
+                    context: context,
+                    label: "Login",
+                    gradientColors: [AppColors.pink, AppColors.lightOrange],
+                    useIcon: false,
+                    onPressed: () {
+                      print("Test onPress");
+                      //TODO: Modularize the code below
+                      if (formKey.currentState.validate()) {
+                        formKey.currentState.save();
+                        // context
+                        //     .read<Auth>()
+                        //     .validateAndSubmit(formKey, _email, _password);
+                        auth.validateAndSubmit(formKey, _email, _password);
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: ScreenData.screenHeight / (ScreenData.five * 9),
+                  ),
+                  Button.plain(
                     context: context,
                     label: "Connect with Google",
                     useGradient: false,
                     buttonColor: AppColors.greyWhite,
                     labelColor: AppColors.pink,
                     useIcon: true,
-                    onPressed: () {
-                      Provider.of<Auth>(context, listen: false)
-                          .signInWithGoogle();
-                    }),
-                SizedBox(
-                  height: ScreenData.screenHeight / ScreenData.ten,
-                ),
-                _buildBottomText(),
-                // SizedBox.expand()
-              ],
+                    onPressed: () =>
+                        // Provider.of<Auth>(context, listen: false)
+                        //     .signInWithGoogle();
+                        auth.signInWithGoogle(),
+                  ),
+
+                  SizedBox(
+                    height: ScreenData.screenHeight / ScreenData.ten,
+                  ),
+                  _buildBottomText(),
+                  // SizedBox.expand()
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   _buildBottomText() {
     return Center(
       child: BottomText(
-          firstText: 'New User',
-          secondText: 'Sign up',
-          // onPressed: () {
-          //   Provider.of<Auth>(context, listen: false)
-          //       .updateStatus(Status.NewUser);
-          // }
-          onPressed: _goto,
-          ),
+        firstText: 'New User',
+        secondText: 'Sign up',
+        // onPressed: () {
+        //   Provider.of<Auth>(context, listen: false)
+        //       .updateStatus(Status.NewUser);
+        // }
+        onPressed: _goto,
+      ),
     );
   }
 
@@ -145,7 +157,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _goto() {
     // This updates Status to NewUser so it can move to the SignUpScreen
-    Provider.of<Auth>(context, listen: false)
-                .updateStatus(Status.NewUser);
+    Provider.of<Auth>(context, listen: false).updateStatus(Status.NewUser);
   }
 }

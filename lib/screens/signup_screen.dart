@@ -27,8 +27,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     ScreenData().init(context);
+
     return Consumer2<Auth, Firestrore>(
-      builder: (context, auth, firestore, child) {
+      builder: (context, auth, firestore, _) {
         return Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: true,
@@ -67,10 +68,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       useIcon: false,
                       onPressed: () async {
                         print("Test onPress");
-                        
+
                         if (formKey.currentState.validate()) {
                           formKey.currentState.save();
-                          
+
                           await auth.validateAndSignUp(
                               formKey, _email, _password, _username);
 
@@ -97,6 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       buttonColor: AppColors.greyWhite,
                       labelColor: AppColors.pink,
                       useIcon: true,
+                      onPressed: () => auth.signInWithGoogle(),
                     ),
 
                     SizedBox(
@@ -153,9 +155,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _goto() {
-    // This updates Status to Unauthenticated so it can move to the LoginScreen
-    Provider.of<Auth>(context, listen: false)
-        .updateStatus(Status.Unauthenticated);
-  }
+  void _goto() =>
+      // This updates Status to Unauthenticated so it can move to the LoginScreen
+      Provider.of<Auth>(context, listen: false)
+          .updateStatus(Status.Unauthenticated);
 }
