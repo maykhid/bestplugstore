@@ -5,28 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Button {
-  static Widget signInOption(
-      {@required BuildContext context,
-      double borderRadius = 10,
-      Color buttonColor = Colors.green,
-      @required String label,
-      double labelSize = 30,
-      Color labelColor,
-      @required IconData iconData,
-      double iconSize = 24,
-      Function onPressed}) {
-    ScreenData().init(context);
-    return TextButton(
-      onPressed: onPressed,
-      // color: buttonColor,
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.only(left: 25.0, right: 25.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
-        ),
-      ),
+  // static Widget signInOption(
+  //     {@required BuildContext context,
+  //     double borderRadius = 10,
+  //     Color buttonColor = Colors.green,
+  //     @required String label,
+  //     double labelSize = 30,
+  //     Color labelColor,
+  //     @required IconData iconData,
+  //     double iconSize = 24,
+  //     Function onPressed}) {
+  //   ScreenData().init(context);
+  //   return TextButton(
+  //     onPressed: onPressed,
+  //     // color: buttonColor,
+  //     style: TextButton.styleFrom(
+  //       padding: EdgeInsets.only(left: 25.0, right: 25.0),
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.all(
+  //           Radius.circular(borderRadius),
+  //         ),
+  //       ),
+  //     ),
 
       // child: Container(
       //   decoration: BoxDecoration(
@@ -64,8 +64,8 @@ class Button {
       //     ],
       //   ),
       // ),
-    );
-  }
+  //   );
+  // }
 
   static Widget plain(
       {BuildContext context,
