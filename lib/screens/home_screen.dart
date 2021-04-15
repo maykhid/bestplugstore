@@ -12,9 +12,10 @@ class Home extends StatelessWidget {
     return Scaffold(
       // key: scaffoldKey,
       // drawer: AppDrawer(),
+      backgroundColor: AppColors.greyerWhite.withOpacity(1.0),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(left: 1.0.h, right: 1.0.h, top: 1.0.h),
+          padding: EdgeInsets.only(top: 1.0.h),
           child: Column(
             children: [
               // greeting and menubar
@@ -25,34 +26,13 @@ class Home extends StatelessWidget {
               // searchbar
               SearchWidget(),
 
-              SizedBox(height: 4.0.h),
-              // daily deals
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Daily Deals',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12.0.sp,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ),
+              SizedBox(height: 3.0.h),
 
-              SizedBox(height: 350.0),
-              
+              // daily deals
+              _buildDailyDeals(),
+
               //populaar categories
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Popular Categories',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12.0.sp,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              )
+              _buildPopularCategories(),
             ],
           ),
         ),
@@ -60,35 +40,114 @@ class Home extends StatelessWidget {
     );
   }
 
-  Container _buildGreetandMenu(BuildContext context) {
-    return Container(
-              child: Row(
-                children: [
-                  // emoji
-                  Text(
-                    '👋 ',
-                    style: TextStyle(fontSize: 20.0.sp),
-                  ),
-                  // greeting and name
-                  InAppGreet(
-                      topTextColor: Colors.black38,
-                      bottomTextColor: Colors.black),
-                  // expands the space between greeting and menubar
-                  Expanded(child: SizedBox()),
-                  // menubar
-                  IconButton(
-                    icon: Icon(Icons.menu_sharp),
-                    onPressed: () {
-                      RootScaffold.openDrawer(context);
-                    },
-                  ),
-                ],
+  _buildDailyDeals() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: 1.0.h,
+            right: 1.0.h,
+            bottom: 1.5.h,
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Daily Deals',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12.0.sp,
+                fontWeight: FontWeight.w800,
               ),
-            );
+            ),
+          ),
+        ),
+
+        // ListView Builder
+        Container(
+          height: 38.0.h,
+          child: ListView.builder(
+            itemCount: 3,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return DailyDealsCard();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildPopularCategories() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            top: 1.5.h,
+            left: 1.0.h,
+            right: 1.0.h,
+            bottom: 2.5.h,
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Popular Categories',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 12.0.sp,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          height: 15.0.h,
+          child: ListView.builder(
+            itemCount: 3,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return // popular categories card
+                  PopularCategoriesCard();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildGreetandMenu(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 1.0.h,
+        right: 1.0.h,
+      ),
+      child: Container(
+        child: Row(
+          children: [
+            // emoji
+            Text(
+              '👋 ',
+              style: TextStyle(fontSize: 20.0.sp),
+            ),
+            // greeting and name
+            InAppGreet(
+              topTextColor: Colors.black38,
+              bottomTextColor: Colors.black,
+            ),
+            // expands the space between greeting and menubar
+            Expanded(child: SizedBox()),
+            // menubar
+            IconButton(
+              icon: Icon(Icons.menu_sharp),
+              onPressed: () {
+                RootScaffold.openDrawer(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
-
-
 
 /// This [RootScaffold] has access to the topmost scaffold on main()
 /// and is able to keep its state across the app, so from anywhere on the app one can
