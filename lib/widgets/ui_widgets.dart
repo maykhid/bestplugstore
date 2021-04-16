@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:best_plug_gadgets/extras/app_colors.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +127,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100.0.h,
+      width: 50.0.h,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
@@ -232,10 +234,8 @@ class InAppGreet extends StatelessWidget {
 }
 
 class SearchWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: EdgeInsets.only(left: 1.0.h, right: 1.0.h),
       child: Container(
@@ -246,7 +246,6 @@ class SearchWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: AppColors.greyWhite,
         ),
-
         child: Row(
           children: [
             SizedBox(
@@ -256,7 +255,6 @@ class SearchWidget extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-
             Expanded(
               child: TextField(
                 cursorColor: Colors.black,
@@ -278,54 +276,60 @@ class SearchWidget extends StatelessWidget {
 }
 
 class DailyDealsCard extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15.0),
-        ),
-      ),
-
+    return Padding(
+      padding: EdgeInsets.only(left: 1.0.h),
       child: Container(
         height: 38.0.h,
         width: 28.0.h,
         child: Column(
           children: [
             // img container
-            Container(
-              height: 27.0.h,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
-              ),
-
-              // item options container
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(children: [
-                  Container(
-                    height: 8.5.h,
-                    color: Colors.blue,
+            Stack(
+              children: [
+                Container(
+                  height: 27.0.h,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
+                    ),
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                        scale: 1.0,
+                      ),
+                    ),
                   ),
-                ]),
-              ),
+                ),
+
+                // item options container
+                ItemOptions(),
+              ],
             ),
 
             // item details
-            Expanded( //expanded to make the detail container take up remaining space in cards container
+            Expanded(
+              //expanded to make the detail container take up remaining space in cards container
               child: SizedBox(
                 child: Container(
+                  width: 28.0.h,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: Colors.white,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(15.0),
                       bottomRight: Radius.circular(15.0),
                     ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('iPhone XR 8GB RAM\n 128GB ROM Crystal', style: TextStyle(fontWeight: FontWeight.w900)),
+                      Text('300,000', style: TextStyle(fontWeight: FontWeight.bold),),
+                    ],
                   ),
                 ),
               ),
@@ -333,7 +337,80 @@ class DailyDealsCard extends StatelessWidget {
           ],
         ),
       ),
-      elevation: 0.0,
+    );
+  }
+}
+
+class ItemOptions extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 0.0,
+      child: Container(
+        width: 30.0.h,
+        height: 8.5.h,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.50),
+        ),
+        // options
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // add to cart
+            Container(
+              height: 6.0.h,
+              width: 18.0.h,
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.3),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_cart,
+                    color: Colors.blue,
+                    size: 3.0.h,
+                  ),
+                  SizedBox(width: 1.0.h),
+                  Text(
+                    'Add to cart',
+                    style: TextStyle(color: Colors.blue, fontSize: 1.5.h),
+                  ),
+                ],
+              ),
+            ),
+
+            //
+            SizedBox(width: 1.0.h),
+
+            // favorite
+            Container(
+              height: 6.0.h,
+              width: 6.0.h,
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.3),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10.0),
+                ),
+              ),
+              child: IconButton(
+                // padding and constraints help remove default padding
+                // in IconButton
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                icon: Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                ),
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -347,9 +424,40 @@ class PopularCategoriesCard extends StatelessWidget {
         height: 12.5.h,
         width: 33.0.h,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.transparent,
           borderRadius: BorderRadius.all(
             Radius.circular(15.0),
+          ),
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: NetworkImage(
+              'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+              scale: 1.0,
+            ),
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.black.withOpacity(0.65), Colors.transparent],
+                stops: [0.1, 1.0]),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15.0),
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.all(1.0.h),
+              child: Text(
+                'Apple',
+                style: TextStyle(
+                  fontSize: 2.0.h,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
           ),
         ),
       ),

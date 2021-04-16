@@ -14,26 +14,28 @@ class Home extends StatelessWidget {
       // drawer: AppDrawer(),
       backgroundColor: AppColors.greyerWhite.withOpacity(1.0),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(top: 1.0.h),
-          child: Column(
-            children: [
-              // greeting and menubar
-              _buildGreetandMenu(context),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(top: 1.0.h),
+            child: Column(
+              children: [
+                // greeting and menubar
+                _buildGreetandMenu(context),
 
-              SizedBox(height: 4.0.h),
+                SizedBox(height: 4.0.h),
 
-              // searchbar
-              SearchWidget(),
+                // searchbar
+                SearchWidget(),
 
-              SizedBox(height: 3.0.h),
+                SizedBox(height: 3.0.h),
 
-              // daily deals
-              _buildDailyDeals(),
+                // daily deals
+                _buildDailyDeals(),
 
-              //populaar categories
-              _buildPopularCategories(),
-            ],
+                //populaar categories
+                _buildPopularCategories(),
+              ],
+            ),
           ),
         ),
       ),
